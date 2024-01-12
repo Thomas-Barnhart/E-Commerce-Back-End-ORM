@@ -1,38 +1,31 @@
-// Import the Sequelize models for Product, Category, Tag, and ProductTag
-const Product = require('./Product');
-const Category = require('./Category');
-const Tag = require('./Tag');
-const ProductTag = require('./ProductTag');
+// Importing models to establish associations between Product, Category, Tag, and ProductTag
 
-// Define relationships between models
-
-// Each Product belongs to a Category
+// Establishing a relationship where each Product belongs to a Category
 Product.belongsTo(Category, {
-  foreignKey: 'category_id', // Establish foreign key relationship
-  onDelete: 'CASCADE', // Cascade deletion if the associated Category is deleted
+  foreignKey: 'category_id', // Connecting through the category_id foreign key
+  onDelete: "CASCADE" // Setting up cascading deletion for seamless data management
 });
 
-// Each Category can have many Products
+// Defining a relationship where each Category can have many Products
 Category.hasMany(Product, {
-  foreignKey: 'category_id', // Establish foreign key relationship
-  onDelete: 'CASCADE', // Cascade deletion if the associated Products are deleted
+  foreignKey: 'category_id', // Associating with the category_id foreign key
+  onDelete: "CASCADE" // Enabling cascading deletion for efficient data handling
 });
 
-// Many-to-Many relationship: Products belong to many Tags through ProductTag
+// Creating a many-to-many relationship between Products and Tags through the ProductTag model
+
+// Products belong to many Tags through the intermediary model ProductTag
 Product.belongsToMany(Tag, {
-  through: ProductTag, // Define the intermediate model
-  as: 'productTag_products', // Alias for the relationship
-  foreignKey: 'product_id' // Foreign key for the relationship
+  through: ProductTag
 });
 
-// Many-to-Many relationship: Tags belong to many Products through ProductTag
+// Tags also belong to many Products through the same intermediary model ProductTag
 Tag.belongsToMany(Product, {
-  through: ProductTag, // Define the intermediate model
-  as: 'productTag_products', // Alias for the relationship
-  foreignKey: 'tag_id' // Foreign key for the relationship
+  through: ProductTag
 });
 
-// Export the models for use in other files
+// Exporting the models to make them accessible in other parts of the application
+
 module.exports = {
   Product,
   Category,
